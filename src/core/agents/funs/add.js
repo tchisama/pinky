@@ -17,7 +17,7 @@ export const add = async () => {
             message: "Select files",
             initialValues: [],
             options: files
-              .filter((f) => !addedFiles.includes(f))
+              // .filter((f) => !addedFiles.includes(f))
               .map((file) => {
                 return {
                   value: file,
