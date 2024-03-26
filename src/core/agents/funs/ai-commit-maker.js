@@ -4,7 +4,7 @@ import simpleGit from "simple-git";
 export const aiCommitMaker = async () => {
   const git = simpleGit();
   const diff = await git.diff();
-
+  if(!diff) return  console.log("nothing to commit to")
   const response = await generate({
     messages: [
       {
@@ -14,7 +14,7 @@ export const aiCommitMaker = async () => {
       },
       {
         role: "user",
-        content: diff.slice(0,2000),
+        content: diff.slice(0, 2000),
       },
     ],
   });

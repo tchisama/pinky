@@ -1,9 +1,11 @@
 import OpenAI from "openai";
-import 'dotenv/config';
+import "dotenv/config";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || "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",
+  apiKey:
+    "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",
 });
 
 export default openai;
+
 
