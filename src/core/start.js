@@ -5,9 +5,6 @@ import { gitAgent } from "./agents/git.js";
 
 export async function start() {
   console.clear();
-
-  await setTimeout(1000);
-
   p.intro(`${color.bgCyan(color.black(" Pinky "))}`);
 
   const agentSelect = await p.group(
@@ -18,10 +15,10 @@ export async function start() {
           initialValue: "git",
           maxItems: 10,
           options: [
-            { value: "git", label: " 🐙 Git Manager" },
-            { value: "code", label: " 📝 Code Genirator" },
-            { value: "fs", label: " 📂 File Manager" },
-            { value: "system", label: " 🐧 System Helper" },
+            { value: "git", label: " \ue702 Git Manager" },
+            { value: "code", label: " \ueac4 Code Genirator" },
+            { value: "fs", label: " \ue5ff File Manager" },
+            { value: "system", label: " \ue73a System Helper" },
           ],
         }),
     },

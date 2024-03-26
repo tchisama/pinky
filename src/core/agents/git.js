@@ -2,8 +2,11 @@ import * as p from "@clack/prompts";
 import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
 import { getStatus, getStatusFiles } from "./funs/status.js";
+import { checkGit } from "./funs/checkGit.js";
 
 export const gitAgent = async () => {
+  const repoExist = await checkGit();
+  if (!repoExist) return console.log("please git init here first");
   const git = await p.group(
     {
       tools: ({ results }) =>
@@ -14,19 +17,23 @@ export const gitAgent = async () => {
           options: [
             {
               value: "status",
-              label: " 🟢 Status",
+              label: " \ueaf0 Status",
               hint: "Check repository status",
             },
-            { value: "add", label: " ➕ Add", hint: "Stage changes" },
-            { value: "commits", label: " 📝 Commit", hint: "Record changes" },
+            { value: "add", label: " \uf4d0 Add", hint: "Stage changes" },
+            {
+              value: "commits",
+              label: " \uf4b6 Commit",
+              hint: "Record changes",
+            },
             {
               value: "push",
-              label: " 🚀 Push",
+              label: " \ueaf4 Push",
               hint: "Send commits to remote",
             },
             {
               value: "pull",
-              label: " 🔄 Pull",
+              label: " \uf4b6 Pull",
               hint: "Fetch and merge changes",
             },
           ],
@@ -48,14 +55,19 @@ export const gitAgent = async () => {
 
   if (git.tools == "add") {
     const files = await getStatusFiles();
-    console.log(files)
-    p.group({
+    const selectedFiles = await p.group({
       files: () =>
         p.multiselect({
-          message: "Select files to add them to stage",
+          message: "Select all files to add them to stage",
           initialValues: [],
-          options: [...files],
+          options: files.map((file) => {
+            return {
+              value: file,
+              label: file,
+            };
+          }),
         }),
     });
+    gitAgent();
   }
 };

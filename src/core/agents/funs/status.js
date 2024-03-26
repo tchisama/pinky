@@ -8,21 +8,21 @@ export async function getStatus() {
 
   if (statusSummary.not_added.length > 0)
     table.push({
-      name: "not added",
+      name: "\uf005 | New files",
       files:
         "|  " +
         statusSummary.not_added.map((file) => color.green(file)).join("\n|  "),
     });
   if (statusSummary.modified.length > 0)
     table.push({
-      name: "modified",
+      name: "\uea73 | Modified",
       files:
         "|  " +
         statusSummary.modified.map((file) => color.blue(file)).join("\n|  "),
     });
   if (statusSummary.deleted.length > 0)
     table.push({
-      name: "deleted",
+      name: "\uea76 | Deleted",
       files:
         "|  " +
         statusSummary.deleted.map((file) => color.red(file)).join("\n|  "),
