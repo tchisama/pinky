@@ -4,8 +4,9 @@ import color from "picocolors";
 import { getStatus, getStatusFiles } from "./funs/status.js";
 import { checkGit } from "./funs/checkGit.js";
 import { start } from "../start.js";
-import { add , listTrackedFiles } from "./funs/add.js";
+import { add, listTrackedFiles } from "./funs/add.js";
 import { commit } from "./funs/commit.js";
+import { branch } from "./funs/branch.js";
 
 export const gitAgent = async (runBefore) => {
   console.clear();
@@ -48,6 +49,11 @@ export const gitAgent = async (runBefore) => {
               hint: "Record changes",
             },
             {
+              value: "branch",
+              label: " \ue725  Branch",
+              hint: "manage branchs",
+            },
+            {
               value: "push",
               label: " \ueaf4  Push",
               hint: "Send to remote",
@@ -78,6 +84,11 @@ export const gitAgent = async (runBefore) => {
 
   if (git.tools == "commit") {
     const commiting = await commit();
+    gitAgent();
+  }
+
+  if (git.tools == "branch") {
+    const b = await branch();
     gitAgent();
   }
 
