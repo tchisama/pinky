@@ -8,6 +8,8 @@ import { add, listTrackedFiles } from "./funs/add.js";
 import { commit } from "./funs/commit.js";
 import { branch } from "./funs/branch.js";
 
+import { getRepositoryName, getCurrentBranch } from "./funs/repo.js";
+
 export const gitAgent = async (runBefore) => {
   console.clear();
   // check if the repo exist
@@ -15,10 +17,13 @@ export const gitAgent = async (runBefore) => {
   if (!repoExist) return console.log("please git init here first");
   // check if there is any files in the stage
   const changed = await getStatusFiles();
-
   const cached = await listTrackedFiles();
+  const repoName = await getRepositoryName();
+  const branchName = await getCurrentBranch();
 
-  p.intro(`${color.bgCyan(color.black(" Pinky | \ue702 Git Manage "))}`);
+  p.intro(
+    `${color.bgCyan(color.black(" \uea62 " + repoName + " | \ue725 " + branchName + " "))}`,
+  );
   if (runBefore) runBefore();
   const git = await p.group(
     {
