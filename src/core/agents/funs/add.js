@@ -15,13 +15,15 @@ export const add = async () => {
         files: () =>
           p.multiselect({
             message: "Select files",
-            initialValues: addedFiles,
-            options: files.map((file) => {
-              return {
-                value: file,
-                label: file,
-              };
-            }),
+            initialValues: [],
+            options: files
+              .filter((f) => !addedFiles.includes(f))
+              .map((file) => {
+                return {
+                  value: file,
+                  label: file,
+                };
+              }),
           }),
       });
       git.add(selectedFiles.files);
