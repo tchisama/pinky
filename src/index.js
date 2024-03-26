@@ -1,4 +1,3 @@
-import { start } from "./funs/start.js";
+import { start } from "./core/start.js";
 
 start();
-

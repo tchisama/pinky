@@ -1,9 +1,10 @@
 import * as p from "@clack/prompts";
 import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
+import { getStatus } from "./funs/status.js";
 
 export const gitAgent = async () => {
-  await p.group(
+  const git = await p.group(
     {
       tools: ({ results }) =>
         p.select({
@@ -26,5 +27,15 @@ export const gitAgent = async () => {
       },
     },
   );
+
+  if (git.tools == "status") {
+    const status = await getStatus();
+    p.note(
+      status.modified
+        .map((file) => color.blue(file))
+        .join("\n"),
+    );
+  }
+
   gitAgent();
 };

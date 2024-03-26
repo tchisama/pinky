@@ -1,7 +1,7 @@
 import * as p from "@clack/prompts";
 import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
-import {gitAgent} from "./agents/git.js"
+import { gitAgent } from "./agents/git.js";
 
 export async function start() {
   console.clear();
@@ -34,6 +34,6 @@ export async function start() {
   );
 
   if (agentSelect.agent == "git") {
-    gitAgent()
+    gitAgent();
   }
 }
