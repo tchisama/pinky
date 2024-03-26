@@ -7,6 +7,7 @@ import { start } from "../start.js";
 import { add, listTrackedFiles } from "./funs/add.js";
 import { commit } from "./funs/commit.js";
 import { branch } from "./funs/branch.js";
+import { hasUnpushedCommits, push } from "./funs/push.js";
 
 import { getRepositoryName, getCurrentBranch } from "./funs/repo.js";
 
@@ -20,6 +21,47 @@ export const gitAgent = async (runBefore) => {
   const cached = await listTrackedFiles();
   const repoName = await getRepositoryName();
   const branchName = await getCurrentBranch();
+  const canPush = await hasUnpushedCommits();
+
+  let options = [
+    {
+      value: "back",
+      label: " \uea9b  back \n",
+    },
+    {
+      value: "status",
+      label: ` \ueaf0  Status (${color.blue(changed.length)})`,
+      hint: "Check status",
+    },
+
+    {
+      value: "commit",
+      label: " \uf4b6  Commit",
+      hint: "Record changes",
+    },
+    {
+      value: "branch",
+      label: " \ue725  Branch",
+      hint: "manage branchs",
+    },
+    {
+      value: "push",
+      label: canPush ? color.green(" \ueaf4  Push") : " \ueaf4  Push",
+      hint: "Send to remote",
+    },
+    {
+      value: "pull",
+      label: " \uf4b6  Pull",
+      hint: "Fetch & merge ",
+    },
+  ];
+  if (changed.length !== 0) {
+    options.splice(2, 0, {
+      value: "add",
+      label: ` \uf4d0  Add (${color.green(cached.length)})`,
+      hint: "Stage changes",
+    });
+  }
 
   p.intro(
     `${color.bgCyan(color.black(" \uea62 " + repoName + " | \ue725 " + branchName + " "))}`,
@@ -32,43 +74,7 @@ export const gitAgent = async (runBefore) => {
           message: `Core git actions`,
           initialValue: "git",
           maxItems: 10,
-          options: [
-            {
-              value: "back",
-              label: " \uea9b  back \n",
-            },
-            {
-              value: "status",
-              label: ` \ueaf0  Status (${color.blue(changed.length)})`,
-              hint: "Check status",
-            },
-            {
-              value: "add",
-              label: ` \uf4d0  Add (${color.green(cached.length)})`,
-              hint: "Stage changes",
-            },
-
-            {
-              value: "commit",
-              label: " \uf4b6  Commit",
-              hint: "Record changes",
-            },
-            {
-              value: "branch",
-              label: " \ue725  Branch",
-              hint: "manage branchs",
-            },
-            {
-              value: "push",
-              label: " \ueaf4  Push",
-              hint: "Send to remote",
-            },
-            {
-              value: "pull",
-              label: " \uf4b6  Pull",
-              hint: "Fetch & merge ",
-            },
-          ],
+          options,
         }),
     },
     {
@@ -99,6 +105,16 @@ export const gitAgent = async (runBefore) => {
 
   if (git.tools == "add") {
     await add();
+    gitAgent();
+  }
+
+  if (git.tools == "push") {
+		const s = p.spinner();
+		s.start('pushing code to '+ branchName);
+      await push(branchName);
+      await setTimeout(2500);
+		s.stop('done' );
+
     gitAgent();
   }
 };
