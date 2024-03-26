@@ -3,10 +3,21 @@ import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
 import { getStatus, getStatusFiles } from "./funs/status.js";
 import { checkGit } from "./funs/checkGit.js";
+import { start } from "../start.js";
+import { add } from "./funs/add.js";
+import { commit } from "./funs/commit.js";
 
-export const gitAgent = async () => {
+export const gitAgent = async (runBefore) => {
+  console.clear();
+  // check if the repo exist
   const repoExist = await checkGit();
   if (!repoExist) return console.log("please git init here first");
+  // check if there is any files in the stage
+  // const stage = await getStatusFiles()
+  // if(!stage.length == 0 ) return
+
+  p.intro(`${color.bgCyan(color.black(" Pinky | \ue702 Git Manage "))}`);
+  if (runBefore) runBefore();
   const git = await p.group(
     {
       tools: ({ results }) =>
@@ -16,58 +27,56 @@ export const gitAgent = async () => {
           maxItems: 10,
           options: [
             {
-              value: "status",
-              label: " \ueaf0 Status",
-              hint: "Check repository status",
+              value: "back",
+              label: " \uea9b  back \n",
             },
-            { value: "add", label: " \uf4d0 Add", hint: "Stage changes" },
             {
-              value: "commits",
-              label: " \uf4b6 Commit",
+              value: "status",
+              label: " \ueaf0  Status",
+              hint: "Check status",
+            },
+            { value: "add", label: " \uf4d0  Add", hint: "Stage changes" },
+            {
+              value: "commit",
+              label: " \uf4b6  Commit",
               hint: "Record changes",
             },
             {
               value: "push",
-              label: " \ueaf4 Push",
-              hint: "Send commits to remote",
+              label: " \ueaf4  Push",
+              hint: "Send to remote",
             },
             {
               value: "pull",
-              label: " \uf4b6 Pull",
-              hint: "Fetch and merge changes",
+              label: " \uf4b6  Pull",
+              hint: "Fetch & merge ",
             },
           ],
         }),
     },
     {
       onCancel: () => {
-        p.cancel("Git Agent cancelled.");
-        process.exit(0);
+        start();
       },
     },
   );
 
   if (git.tools == "status") {
     const status = await getStatus();
-    p.note(status);
+    gitAgent(() => p.note(status));
+  }
+
+  if (git.tools == "back") {
+    start();
+  }
+
+  if (git.tools == "commit") {
+    const commiting = await commit();
     gitAgent();
   }
 
   if (git.tools == "add") {
-    const files = await getStatusFiles();
-    const selectedFiles = await p.group({
-      files: () =>
-        p.multiselect({
-          message: "Select all files to add them to stage",
-          initialValues: [],
-          options: files.map((file) => {
-            return {
-              value: file,
-              label: file,
-            };
-          }),
-        }),
-    });
+    await add();
     gitAgent();
   }
 };
