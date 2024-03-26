@@ -37,7 +37,7 @@ export const branch = async () => {
             }),
           }),
       });
-      git.add(selectedFiles.files);
+      git.checkout(selectedBranch.branch);
 
       resolve(selectedFiles.files);
     } catch (error) {
