@@ -5,6 +5,9 @@ import simpleGit from "simple-git";
 
 export const add = async () => {
   const git = simpleGit();
+
+  const addedFiles = await listTrackedFiles();
+
   return new Promise(async (resolve, reject) => {
     try {
       const files = await getStatusFiles();
@@ -12,7 +15,7 @@ export const add = async () => {
         files: () =>
           p.multiselect({
             message: "Select files",
-            initialValues: [],
+            initialValues: addedFiles,
             options: files.map((file) => {
               return {
                 value: file,
@@ -22,9 +25,21 @@ export const add = async () => {
           }),
       });
       git.add(selectedFiles.files);
+
       resolve(selectedFiles.files);
     } catch (error) {
       reject(error);
     }
   });
 };
+
+export async function listTrackedFiles() {
+  const git = simpleGit();
+  try {
+    const diffSummary = await git.diff(["--cached", "--name-only"]);
+    return diffSummary.split("\n").filter((f) => f != "");
+  } catch (error) {
+    console.error("Error listing staged files:", error);
+    return [];
+  }
+}

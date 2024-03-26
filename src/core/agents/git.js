@@ -4,7 +4,7 @@ import color from "picocolors";
 import { getStatus, getStatusFiles } from "./funs/status.js";
 import { checkGit } from "./funs/checkGit.js";
 import { start } from "../start.js";
-import { add } from "./funs/add.js";
+import { add , listTrackedFiles } from "./funs/add.js";
 import { commit } from "./funs/commit.js";
 
 export const gitAgent = async (runBefore) => {
@@ -13,8 +13,9 @@ export const gitAgent = async (runBefore) => {
   const repoExist = await checkGit();
   if (!repoExist) return console.log("please git init here first");
   // check if there is any files in the stage
-  // const stage = await getStatusFiles()
-  // if(!stage.length == 0 ) return
+  const changed = await getStatusFiles();
+
+  const cached = await listTrackedFiles();
 
   p.intro(`${color.bgCyan(color.black(" Pinky | \ue702 Git Manage "))}`);
   if (runBefore) runBefore();
@@ -32,10 +33,15 @@ export const gitAgent = async (runBefore) => {
             },
             {
               value: "status",
-              label: " \ueaf0  Status",
+              label: ` \ueaf0  Status (${color.blue(changed.length)})`,
               hint: "Check status",
             },
-            { value: "add", label: " \uf4d0  Add", hint: "Stage changes" },
+            {
+              value: "add",
+              label: ` \uf4d0  Add (${color.green(cached.length)})`,
+              hint: "Stage changes",
+            },
+
             {
               value: "commit",
               label: " \uf4b6  Commit",

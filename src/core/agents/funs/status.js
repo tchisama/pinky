@@ -1,17 +1,26 @@
 import simpleGit from "simple-git";
 import color from "picocolors";
+import { listTrackedFiles } from "./add.js";
 
 export async function getStatus() {
   const git = simpleGit();
   const statusSummary = await git.status();
   const table = [];
 
+  const addedFiles = await listTrackedFiles();
+
+  if (addedFiles.length > 0)
+    table.push({
+      name: "\uf1c0 ) Cached files",
+      files: "|  " + addedFiles.map((file) => color.green(file)).join("\n|  "),
+    });
+
   if (statusSummary.not_added.length > 0)
     table.push({
       name: "\ue676 ) New files",
       files:
         "|  " +
-        statusSummary.not_added.map((file) => color.green(file)).join("\n|  "),
+        statusSummary.not_added.map((file) => color.blue(file)).join("\n|  "),
     });
   if (statusSummary.modified.length > 0)
     table.push({
