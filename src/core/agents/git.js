@@ -1,7 +1,7 @@
 import * as p from "@clack/prompts";
 import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
-import { getStatus } from "./funs/status.js";
+import { getStatus, getStatusFiles } from "./funs/status.js";
 
 export const gitAgent = async () => {
   const git = await p.group(
@@ -12,11 +12,23 @@ export const gitAgent = async () => {
           initialValue: "git",
           maxItems: 10,
           options: [
-            { value: "status", label: " 🟢 Status - Check repository status" },
-            { value: "add", label: " ➕ Add - Stage changes" },
-            { value: "commits", label: " 📝 Commit - Record changes" },
-            { value: "push", label: " 🚀 Push - Send commits to remote" },
-            { value: "pull", label: " 🔄 Fetch and merge changes" },
+            {
+              value: "status",
+              label: " 🟢 Status",
+              hint: "Check repository status",
+            },
+            { value: "add", label: " ➕ Add", hint: "Stage changes" },
+            { value: "commits", label: " 📝 Commit", hint: "Record changes" },
+            {
+              value: "push",
+              label: " 🚀 Push",
+              hint: "Send commits to remote",
+            },
+            {
+              value: "pull",
+              label: " 🔄 Pull",
+              hint: "Fetch and merge changes",
+            },
           ],
         }),
     },
@@ -30,12 +42,20 @@ export const gitAgent = async () => {
 
   if (git.tools == "status") {
     const status = await getStatus();
-    p.note(
-      status.modified
-        .map((file) => color.blue(file))
-        .join("\n"),
-    );
+    p.note(status);
+    gitAgent();
   }
 
-  gitAgent();
+  if (git.tools == "add") {
+    const files = await getStatusFiles();
+    console.log(files)
+    p.group({
+      files: () =>
+        p.multiselect({
+          message: "Select files to add them to stage",
+          initialValues: [],
+          options: [...files],
+        }),
+    });
+  }
 };
