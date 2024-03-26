@@ -34,5 +34,7 @@ export async function push(branchName) {
   const git = simpleGit();
   try {
     await git.push("origin", branchName);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }
