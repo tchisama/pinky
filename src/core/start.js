@@ -4,6 +4,7 @@ import color from "picocolors";
 import { gitAgent } from "./agents/git/git.js";
 import { settingsAgent } from "./agents/settings/settings.js";
 import { githubTimeLine } from "./extentions/github-time-line.js";
+import { codeGenerator } from "./agents/codeGenerator/codeGenerator.js";
 
 export async function start() {
   console.clear();
@@ -40,5 +41,8 @@ export async function start() {
   }
   if (agentSelect.agent == "settings") {
     settingsAgent();
+  }
+  if (agentSelect.agent == "code") {
+    codeGenerator();
   }
 }
