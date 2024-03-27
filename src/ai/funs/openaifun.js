@@ -11,6 +11,5 @@ export const generate = async ({ messages, functions }) => {
     presence_penalty: 0,
   };
   const response = await openai.chat.completions.create(reqObj);
-  console.log(response.choices[0].message.content)
   return response.choices[0].message.content;
 };

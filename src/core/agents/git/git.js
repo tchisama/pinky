@@ -86,7 +86,7 @@ export const gitAgent = async (runBefore) => {
 
   if (git.tools == "status") {
     const status = await getStatus();
-    gitAgent(() => p.note(status));
+    gitAgent(() => p.note(status ?? "no changes"));
   }
 
   if (git.tools == "back") {
@@ -109,11 +109,11 @@ export const gitAgent = async (runBefore) => {
   }
 
   if (git.tools == "push") {
-		const s = p.spinner();
-		s.start('pushing code to '+ branchName);
-      await push(branchName);
-      await setTimeout(2500);
-		s.stop('done' );
+    const s = p.spinner();
+    s.start("pushing code to " + branchName);
+    await push(branchName);
+    await setTimeout(2500);
+    s.stop("done");
 
     gitAgent();
   }
