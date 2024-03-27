@@ -32,9 +32,23 @@ export const commit = async () => {
         git.commit(message.message);
         resolve(message.message);
       } else {
+        const s = p.spinner();
+        s.start("Genirating commit");
         const aicommit = await aiCommitMaker();
-        const addall = await git.add("*");
-        git.commit(aicommit);
+        await setTimeout(2500);
+        s.stop("done");
+        p.note(aicommit.replace(/(.{30})/g, "$1\n"));
+        const confirmCommit = await p.group({
+          confirm: () =>
+            p.confirm({
+              message: "commit",
+              initialValue: false,
+            }),
+        });
+        if (confirmCommit.confirm) {
+          const addall = await git.add("*");
+          git.commit(aicommit);
+        }
         resolve(aicommit);
       }
     } catch (error) {
