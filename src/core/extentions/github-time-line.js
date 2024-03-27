@@ -3,6 +3,8 @@ import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
 import simpleGit from "simple-git";
 
+//TODO: hello world
+
 const git = simpleGit();
 
 // Function to get commits and format them into a GitHub-like timeline
@@ -31,6 +33,9 @@ export const githubTimeLine = async () => {
     // .join("\n\n");
     const days = getDateRange(timeline[timeline.length - 1].date, new Date());
 
+    // CREATE: a function that return the new date
+    // UPDATE: this function so it will return something good
+
     p.note(
       days
         .map((d) => {
@@ -38,7 +43,6 @@ export const githubTimeLine = async () => {
           const findday = timeline.find((dd) => dd.date == d);
           if (!findday) return color.black(s);
           const commitsNumber = findday.commits || 0;
-          const colors = ["red", "yellow", "green", "cyan", "blue"];
           return commitsNumber.length > 9 ? color.green(s) : color.cyan(s);
         })
         .map((_, i) => ((i + 1) % 14 === 0 ? [_, "\n"] : _))
