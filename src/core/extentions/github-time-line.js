@@ -45,7 +45,7 @@ export const githubTimeLine = async () => {
         .flat(2)
         .join(""),
       // .slice(0, -1)
-      "Repo activities",
+      `Starts in ${days.length} days`,
     );
   } catch (error) {
     console.error("Error fetching commits:", error);
