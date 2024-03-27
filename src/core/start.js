@@ -3,10 +3,13 @@ import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
 import { gitAgent } from "./agents/git/git.js";
 import { settingsAgent } from "./agents/settings/settings.js";
+import { githubTimeLine } from "./extentions/github-time-line.js";
 
 export async function start() {
   console.clear();
-  p.intro(`${color.bgCyan(color.black(" Pinky "))}`);
+  p.intro(`${color.bgCyan(color.black(" Pinky "))} `);
+
+  await githubTimeLine();
 
   const agentSelect = await p.group(
     {

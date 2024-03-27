@@ -24,14 +24,16 @@ export const settingsAgent = async (runBefore) => {
       value: "github-access-token",
       label:
         " \ueb11  Github access token (" +
-        color.green((data["github-access-token"]?? " ").slice(0, 6) + "******") +
+        color.green(
+          (data["github-access-token"] ?? " ").slice(0, 6) + "******",
+        ) +
         ")",
     },
     {
       value: "openai-key",
       label:
         " \ueb11  Openai key (" +
-        color.green((data["openai-key"]??" ").slice(0, 6) + "******") +
+        color.green((data["openai-key"] ?? " ").slice(0, 6) + "******") +
         ")",
     },
   ];
@@ -42,7 +44,7 @@ export const settingsAgent = async (runBefore) => {
     {
       option: ({ results }) =>
         p.select({
-          message: `Core git actions`,
+          message: `setting`,
           initialValue: "git",
           maxItems: 10,
           options,
@@ -56,7 +58,7 @@ export const settingsAgent = async (runBefore) => {
   );
   if (settings.option === "back") {
     start();
+  }else{
+    funs(settings.option);
   }
-
-  funs(settings.option);
 };
