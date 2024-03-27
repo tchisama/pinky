@@ -2,6 +2,7 @@ import * as p from "@clack/prompts";
 import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
 import { gitAgent } from "./agents/git/git.js";
+import { settingsAgent } from "./agents/settings/settings.js";
 
 export async function start() {
   console.clear();
@@ -19,7 +20,7 @@ export async function start() {
             { value: "code", label: "\ueac4  Code Genirator" },
             { value: "fs", label: "\ue5ff  File Manager" },
             { value: "system", label: "\ue73a  System Helper \n" },
-            { value: "sitting", label: "\ueb51  Settings " },
+            { value: "settings", label: "\ueb51  Settings " },
           ],
         }),
     },
@@ -34,5 +35,7 @@ export async function start() {
   if (agentSelect.agent == "git") {
     gitAgent();
   }
-
+  if (agentSelect.agent == "settings") {
+    settingsAgent();
+  }
 }
