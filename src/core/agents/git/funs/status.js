@@ -38,6 +38,7 @@ export async function getStatus() {
     });
 
   console.log(statusSummary);
+  if (table.length === 0) return " no changes ";
   return table.map((group) => `\n${group.name}\n${group.files} \n`).join("");
 }
 
