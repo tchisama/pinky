@@ -9,7 +9,7 @@ import fs from "fs";
 export const codeGenerator = async () => {
   console.clear();
   exec(
-    "grep -r -n 'CREATE' --exclude-dir=node_modules --exclude-dir=.git --exclude-dir='.*' ./ ",
+    "grep -r -n 'CREATE' --exclude-dir=node_modules --exclude-dir=.git  ./ ",
     async (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);
