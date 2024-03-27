@@ -4,13 +4,13 @@ import simpleGit from "simple-git";
 export const aiCommitMaker = async () => {
   const git = simpleGit();
   const diff = await git.diff();
-  if(!diff) return  console.log("nothing to commit to")
+  if (!diff) return console.log("nothing to commit to");
   const response = await generate({
     messages: [
       {
         role: "system",
         content:
-          "Your task is to craft concise and descriptive commit messages based on the provided code diff, ensuring each message contains between 10 to 30 words. If there are numerous changes, please group the files logically and create multiple commits to effectively capture the essence of each set of changes.",
+          "Craft concise and descriptive commit messages based on the main core functionality of the code. Ignore small changes or non-impactful elements and focus on capturing the essence of significant modifications that affect the code's core functionality. Each commit message should contain between 10 to 40 words.",
       },
       {
         role: "user",
