@@ -35,7 +35,6 @@ export const commit = async () => {
         const s = p.spinner();
         s.start("Genirating commit");
         const aicommit = await aiCommitMaker();
-        await setTimeout(2500);
         s.stop("done");
         p.note(aicommit.replace(/(.{30})/g, "$1\n"));
         const confirmCommit = await p.group({
@@ -52,6 +51,7 @@ export const commit = async () => {
         resolve(aicommit);
       }
     } catch (error) {
+      console.log(error);
       reject(error);
     }
   });

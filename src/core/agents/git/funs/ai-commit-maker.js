@@ -1,4 +1,4 @@
-import { generate } from "../../../ai/funs/openaifun.js";
+import { generate } from "../../../../ai/funs/openaifun.js";
 import simpleGit from "simple-git";
 
 export const aiCommitMaker = async () => {
@@ -14,10 +14,9 @@ export const aiCommitMaker = async () => {
       },
       {
         role: "user",
-        content: diff.slice(0, 2000),
+        content: diff.slice(0, 1000),
       },
     ],
   });
-
   return response;
 };

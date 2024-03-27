@@ -3,7 +3,7 @@ import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
 import { getStatus, getStatusFiles } from "./funs/status.js";
 import { checkGit } from "./funs/checkGit.js";
-import { start } from "../start.js";
+import { start } from "../../start.js";
 import { add, listTrackedFiles } from "./funs/add.js";
 import { commit } from "./funs/commit.js";
 import { branch } from "./funs/branch.js";
