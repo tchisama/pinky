@@ -35,7 +35,7 @@ export async function start() {
       },
     },
   );
-
+  p.spinner("Loading..."); 
   if (agentSelect.agent == "git") {
     gitAgent();
   }

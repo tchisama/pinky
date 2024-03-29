@@ -13,4 +13,8 @@ export const messages = [
     role: "assistant",
     content: 'function greetUser(name) {\n  return "Hello " + name + "!";\n}',
   },
+{
+    role: "user",
+    content: "// CREATE Add your content here\n",
+},
 ];

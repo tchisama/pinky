@@ -1,4 +1,4 @@
-#!/home/tchisama/nodejs/bin/node
+#!/usr/bin/env node
 import { start } from "./core/start.js";
 
 start();
