@@ -35,7 +35,7 @@ export const commit = async () => {
         const s = p.spinner();
         s.start("Genirating commit");
         const aicommit = await aiCommitMaker();
-        s.stop("done");
+        s.stop("");
         p.note((aicommit??"").replace(/(.{30})/g, "$1\n"));
         const confirmCommit = await p.group({
           confirm: () =>
